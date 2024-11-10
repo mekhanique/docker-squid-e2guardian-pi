@@ -4,7 +4,7 @@ MAINTAINER Justin Schwartzbeck <justinmschw@gmail.com>
 ENV SQUID_USER=squid
 ENV SQUID_DIR /usr/local/squid
 ARG BUILD_DATE
-ENV VERSION 5.3
+ENV VERSION 6.1
 ENV OS debian
 
 RUN apt-get update && \
@@ -13,8 +13,8 @@ RUN apt-get update && \
 
 # squid 3.5.27
 RUN wget http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.27.tar.gz && \
-    tar xzvf squid-3.5.27.tar.gz && \
-    cd squid-3.5.27 && \
+    tar xzvf squid-6.1.2.tar.gz && \
+    cd squid-6.1.2 && \
     ./configure --prefix=$SQUID_DIR --enable-ssl --with-openssl --enable-ssl-crtd --with-large-files --enable-auth --enable-icap-client && \
     make -j4 && \
     make install
