@@ -1,20 +1,23 @@
 FROM raspbian/stretch
-MAINTAINER Justin Schwartzbeck <justinmschw@gmail.com>
+MAINTAINER Stephen Widup \< s w i d u p \@ h o t m a i l . c o m \>
 
 ENV SQUID_USER=squid
 ENV SQUID_DIR /usr/local/squid
+ENV SQUID_MAJOR 6
+ENV SQUID_MINOR 1
+ENV SQUID_PATCH 2
 ARG BUILD_DATE
-ENV VERSION 6.1
+# e2guardian version
+ENV VERSION 5.5.6
 ENV OS debian
 
 RUN apt-get update && \
-    apt-get -qq -y install openssl libssl1.0-dev build-essential wget curl net-tools dnsutils tcpdump dnsmasq && \
+    apt-get -qq -y install openssl libssl-dev build-essential wget curl net-tools dnsutils tcpdump dnsmasq && \
     apt-get clean
 
-# squid 3.5.27
-RUN wget http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.27.tar.gz && \
-    tar xzvf squid-6.1.2.tar.gz && \
-    cd squid-6.1.2 && \
+RUN wget http://www.squid-cache.org/Versions/v${SQUID_MAJOR}/${SQUID_MAJOR}.${SQUID_MINOR}/squid-${SQUID_MAJOR}.${SQUID_MINOR}.${SQUID_PATCH}.tar.gz && \
+    tar xzvf squid-${SQUID_MAJOR}.${SQUID_MINOR}.${SQUID_PATCH}.tar.gz && \
+    cd squid-${SQUID_MAJOR}.${SQUID_MINOR}.${SQUID_PATCH} && \
     ./configure --prefix=$SQUID_DIR --enable-ssl --with-openssl --enable-ssl-crtd --with-large-files --enable-auth --enable-icap-client && \
     make -j4 && \
     make install
@@ -44,8 +47,8 @@ RUN apt update \
 bash coreutils dash debianutils diffutils dpkg e2fsprogs findutils grep gzip hostname ncurses-base \
 libevent-pthreads-* libevent-dev ncurses-bin perl-base sed login sysvinit-utils tar bsdutils \
 mount util-linux libc6-dev libc-dev gcc g++ make dpkg-dev autotools-dev debhelper dh-autoreconf dpatch \
-libclamav-dev libpcre3-dev zlib1g-dev pkg-config libssl1.1 libssl-dev libevent-pthreads-2.0-5 libtommath1 \
-libevent-core-2.0-5 iptables
+libclamav-dev libpcre3-dev zlib1g-dev pkg-config libssl libssl-dev libtommath1 libevent-pthreads \
+libevent-core iptables
 
 
 # Start e2guardian
